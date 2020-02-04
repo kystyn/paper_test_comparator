@@ -15,7 +15,6 @@ are relative to script directory.
 
 base = ''
 
-testAddr = 'https://github.com/kystyn/paper_test_source.git'
 testDir = 'test'
 
 studentDir = 'student'
@@ -146,7 +145,7 @@ def clear():
 
 def findEndOfCurStringOutput(idx, lines):
     newIdx = -1
-    for i in range(idx, len(lines)):
+    for i in range(idx + 1, len(lines)):
         res = re.match('\d*:', lines[i])
         if res is not None:
             newIdx = i
@@ -177,9 +176,8 @@ def compareAnswers():
     while 0 <= refIdx < len(refLines):
         res = re.match('\d*:', refLines[refIdx])
         if res is not None:
-            refIdx += 1
-            studIdx += 1
             found = False
+
             # find such string in student answer
             for i in range(studIdx, len(studLines)):
                 if studLines[i] == refLines[refIdx] or studLines[i] == trashMarker + '\n':
@@ -189,10 +187,13 @@ def compareAnswers():
                     studIdx = i
                     break
 
+
             # detect area of output for current string
             newRefIdx = findEndOfCurStringOutput(refIdx, refLines)
             if newRefIdx == -1:
                 newRefIdx = len(refLines)
+
+            refIdx += 1
 
             missing = 0
             redundant = 0
@@ -203,37 +204,33 @@ def compareAnswers():
             if not found:
                 missing = newRefIdx - refIdx
             else:
-                studStart = studIdx
-
                 newStudIdx = findEndOfCurStringOutput(studIdx, studLines)
                 if newStudIdx == -1:
                     newStudIdx = len(studLines)
+
+                studIdx += 1
 
                 visitedStudentStrings = []
                 for i in range(refIdx, newRefIdx):
                     found = False
                     for j in range(studIdx, newStudIdx):
-                        if studLines[j] == refLines[i] or studLines[j] == trashMarker + '\n':
+                        if (studLines[j] == refLines[i] or studLines[j] == trashMarker + '\n') \
+                                and j not in visitedStudentStrings:
                             if studLines[j] == trashMarker + '\n' and not abs(int(refLines[i])) > 1000:
                                 continue
+                            if (len(visitedStudentStrings) and j > max(visitedStudentStrings)) \
+                                    or len(visitedStudentStrings) == 0:
+                                ok += 1
+                            else:
+                                wrong_place += 1
                             visitedStudentStrings.append(j)
                             found = True
-                            ok += 1
-                            studIdx = j
                             break
                     if not found:
                         missing += 1
 
-                if ok != newRefIdx - refIdx:
-                    # run over student strings
-                    # if no such string in reference => redundant. else - wrong place
-                    for i in range(studStart, newStudIdx):
-                        try:
-                            idx = refLines.index(studLines[i], refIdx, newRefIdx)
-                            if idx not in visitedStudentStrings:
-                                wrong_place += 1
-                        except ValueError:
-                            redundant += 1
+                # student written OK, WRONG_PLACE and redundant/wrong lines
+                redundant = newStudIdx - studIdx - ok - wrong_place
 
             outputOf.update(
                 {
@@ -246,6 +243,7 @@ def compareAnswers():
                         }
                 })
             refIdx = newRefIdx
+            studIdx = newStudIdx
     return outputOf
 
 
@@ -280,7 +278,7 @@ def genJson(fileName, parseRes):
                 "failure": {
                     "@class": "org.jetbrains.research.runner.data.UnknownFailureDatum",
                     "nestedException":
-                        "Redundant: " + str(parseRes[key][ComparisonStatus.REDUNDANT]) + ", wrong place: " +
+                        "Redundant: " + str(parseRes[key][ComparisonStatus.REDUNDANT]) + ", wrong order/wrong answer: " +
                         str(parseRes[key][ComparisonStatus.WRONG_PLACE]) + ", missing:" +
                         str(parseRes[key][ComparisonStatus.MISSING]) + ", ok: " + str(parseRes[key][ComparisonStatus.OK])
                 } if not condition else None
@@ -304,12 +302,22 @@ def main():
     global base
     try:
         base = os.path.abspath(os.curdir)
-        updateRepo(testAddr, testDir)
+
         if "-src" not in sys.argv:
             raise RuntimeError
-        studentAddr = sys.argv[sys.argv.index("-src") + 1]
-        if "-v" in sys.argv:
-            num = sys.argv.index("-v");
+
+        testAddr = sys.argv[sys.argv.index("-src") + 1]
+        if "-vSrc" in sys.argv:
+            num = sys.argv.index("-vSrc");
+            updateRepo(testAddr, testDir, sys.argv[num + 1])
+        else:
+            updateRepo(testAddr, testDir)
+
+        if "-ans" not in sys.argv:
+            raise RuntimeError
+        studentAddr = sys.argv[sys.argv.index("-ans") + 1]
+        if "-vAns" in sys.argv:
+            num = sys.argv.index("-vAns");
             updateRepo(studentAddr, studentDir, sys.argv[num + 1])
         else:
             updateRepo(studentAddr, studentDir)

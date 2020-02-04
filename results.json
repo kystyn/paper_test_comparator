@@ -34,8 +34,11 @@
             ],
             "results": [
                 {
-                    "status": "SUCCESSFUL",
-                    "failure": null
+                    "status": "FAILED",
+                    "failure": {
+                        "@class": "org.jetbrains.research.runner.data.UnknownFailureDatum",
+                        "nestedException": "Redundant: 4, wrong order/wrong answer: 3, missing:2, ok: 6"
+                    }
                 }
             ]
         },
