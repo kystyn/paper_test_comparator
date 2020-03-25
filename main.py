@@ -40,6 +40,7 @@ class ComparisonStatus(Enum):
     REDUNDANT = 2
     MISSING = 3
     WRONG_PLACE = 4
+    WAS_FOUND = 5
 
 
 def run(command, sendException=True):
@@ -240,7 +241,8 @@ def compareAnswers():
                             ComparisonStatus.OK: ok,
                             ComparisonStatus.REDUNDANT: redundant,
                             ComparisonStatus.MISSING: missing,
-                            ComparisonStatus.WRONG_PLACE: wrong_place
+                            ComparisonStatus.WRONG_PLACE: wrong_place,
+                            ComparisonStatus.WAS_FOUND: found
                         }
                 })
             refIdx = newRefIdx
@@ -269,7 +271,8 @@ def genJson(fileName, parseRes):
         condition = \
             parseRes[key][ComparisonStatus.REDUNDANT] == 0 and \
             parseRes[key][ComparisonStatus.WRONG_PLACE] == 0 and \
-            parseRes[key][ComparisonStatus.MISSING] == 0
+            parseRes[key][ComparisonStatus.MISSING] == 0 and \
+            parseRes[key][ComparisonStatus.WAS_FOUND] is True
         strg = {
             "packageName": packageName,
             "methodName": curTestName,
@@ -281,7 +284,8 @@ def genJson(fileName, parseRes):
                     "nestedException":
                         "Redundant: " + str(parseRes[key][ComparisonStatus.REDUNDANT]) + ", wrong order/wrong answer: " +
                         str(parseRes[key][ComparisonStatus.WRONG_PLACE]) + ", missing:" +
-                        str(parseRes[key][ComparisonStatus.MISSING]) + ", ok: " + str(parseRes[key][ComparisonStatus.OK])
+                        str(parseRes[key][ComparisonStatus.MISSING]) + ", ok: " + str(parseRes[key][ComparisonStatus.OK]) +
+                        ("" if parseRes[key][ComparisonStatus.WAS_FOUND] else ", not found")
                 } if not condition else None
             }]
         }
