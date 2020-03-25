@@ -34,11 +34,8 @@
             ],
             "results": [
                 {
-                    "status": "FAILED",
-                    "failure": {
-                        "@class": "org.jetbrains.research.runner.data.UnknownFailureDatum",
-                        "nestedException": "Redundant: 0, wrong order/wrong answer: 0, missing:0, ok: 0, not found"
-                    }
+                    "status": "SUCCESSFUL",
+                    "failure": null
                 }
             ]
         },
@@ -50,11 +47,8 @@
             ],
             "results": [
                 {
-                    "status": "FAILED",
-                    "failure": {
-                        "@class": "org.jetbrains.research.runner.data.UnknownFailureDatum",
-                        "nestedException": "Redundant: 0, wrong order/wrong answer: 0, missing:2, ok: 0, not found"
-                    }
+                    "status": "SUCCESSFUL",
+                    "failure": null
                 }
             ]
         },
@@ -66,11 +60,8 @@
             ],
             "results": [
                 {
-                    "status": "FAILED",
-                    "failure": {
-                        "@class": "org.jetbrains.research.runner.data.UnknownFailureDatum",
-                        "nestedException": "Redundant: 2, wrong order/wrong answer: 1, missing:1, ok: 2"
-                    }
+                    "status": "SUCCESSFUL",
+                    "failure": null
                 }
             ]
         },

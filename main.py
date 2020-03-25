@@ -181,7 +181,7 @@ def compareAnswers():
 
             # find such string in student answer
             for i in range(studIdx, len(studLines)):
-                if studLines[i] == refLines[refIdx] or studLines[i] == trashMarker + '\n':
+                if studLines[i].replace(' ', '') == refLines[refIdx].replace(' ', '') or studLines[i] == trashMarker + '\n':
                     if studLines[i] == trashMarker + '\n' and not abs(int(refLines[refIdx])) > 1000:
                         continue
                     found = True
@@ -216,11 +216,11 @@ def compareAnswers():
                 for i in range(refIdx, newRefIdx):
                     found = False
                     for j in range(studIdx, newStudIdx):
-                        if (studLines[j] == refLines[i] or studLines[j] == trashMarker + '\n') \
+                        if (studLines[j].replace(' ', '') == refLines[i].replace(' ', '')  or studLines[j] == trashMarker + '\n') \
                                 and j not in visitedStudentStrings:
                             if studLines[j] == trashMarker + '\n' and not abs(int(refLines[i])) > 1000:
                                 continue
-                            if (len(visitedStudentStrings) and j > max(visitedStudentStrings)) \
+                            if (len(visitedStudentStrings) > 0 and j > max(visitedStudentStrings)) \
                                     or len(visitedStudentStrings) == 0:
                                 ok += 1
                             else:
