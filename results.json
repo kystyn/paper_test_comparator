@@ -8,8 +8,11 @@
             ],
             "results": [
                 {
-                    "status": "SUCCESSFUL",
-                    "failure": null
+                    "status": "FAILED",
+                    "failure": {
+                        "@class": "org.jetbrains.research.runner.data.UnknownFailureDatum",
+                        "nestedException": "Redundant: 0, wrong order/wrong answer: 0, missing:2, ok: 0"
+                    }
                 }
             ]
         },
@@ -21,8 +24,11 @@
             ],
             "results": [
                 {
-                    "status": "SUCCESSFUL",
-                    "failure": null
+                    "status": "FAILED",
+                    "failure": {
+                        "@class": "org.jetbrains.research.runner.data.UnknownFailureDatum",
+                        "nestedException": "Redundant: 0, wrong order/wrong answer: 0, missing:1, ok: 0"
+                    }
                 }
             ]
         },
@@ -37,7 +43,7 @@
                     "status": "FAILED",
                     "failure": {
                         "@class": "org.jetbrains.research.runner.data.UnknownFailureDatum",
-                        "nestedException": "Redundant: 4, wrong order/wrong answer: 3, missing:2, ok: 6"
+                        "nestedException": "Redundant: 0, wrong order/wrong answer: 0, missing:11, ok: 0"
                     }
                 }
             ]
@@ -50,8 +56,11 @@
             ],
             "results": [
                 {
-                    "status": "SUCCESSFUL",
-                    "failure": null
+                    "status": "FAILED",
+                    "failure": {
+                        "@class": "org.jetbrains.research.runner.data.UnknownFailureDatum",
+                        "nestedException": "Redundant: 0, wrong order/wrong answer: 0, missing:3, ok: 0"
+                    }
                 }
             ]
         },
@@ -63,8 +72,11 @@
             ],
             "results": [
                 {
-                    "status": "SUCCESSFUL",
-                    "failure": null
+                    "status": "FAILED",
+                    "failure": {
+                        "@class": "org.jetbrains.research.runner.data.UnknownFailureDatum",
+                        "nestedException": "Redundant: 0, wrong order/wrong answer: 0, missing:3, ok: 0"
+                    }
                 }
             ]
         }

@@ -199,6 +199,7 @@ def compareAnswers():
             redundant = 0
             wrong_place = 0
             ok = 0
+            newStudIdx = studIdx
 
             # write into result
             if not found:
